@@ -1,12 +1,9 @@
--- SPDX-License-Identifier: AGPL-3.0-or-later
+-- SPDX-License-Identifier: MPL-2.0
 -- SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell
 --
 -- LucidScript face. Distinctive features exercised: module declaration
--- with `where`, type signatures kept as comments, equation-style
--- function definitions, `--` line comments. (The unit-parameter idiom
--- `main () = …` lowers to canonical `fn main() { … }`. Function
--- application uses canonical paren syntax `f(x)` rather than Haskell
--- currying `f x` — see examples/faces/README.adoc.)
+-- with `where`, type signatures as `name :: Type`, equation-style
+-- function definitions, `--` line comments.
 -- face: lucidscript
 
 module Hello where
