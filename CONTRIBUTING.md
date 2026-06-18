@@ -1,7 +1,10 @@
-<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+<!--
+SPDX-License-Identifier: MPL-2.0
+Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
 <!-- SPDX-FileCopyrightText: 2024-2026 Jonathan D.A. Jewell (hyperpolymath) -->
 
-# Contributing to lucidScript
+# Contributing to LucidScript
 
 This is a **brand-surface repo**. The compiler, type checker, borrow checker,
 codegen, and face transformer all live in
