@@ -1,0 +1,171 @@
+https://opensource.org/licenses/MPL-2.0[image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[License:
+MPL-2.0]]
+
+PureScript / Haskell-syntax AffineScript. Write code that looks like
+PureScript or Haskell, get affine resource guarantees and typed-wasm
+output.
+
+== What it is
+
+LucidScript is
+https://github.com/hyperpolymath/affinescript[AffineScript] with its
+`+lucid+` face pre-selected. If you write PureScript or Haskell, you
+already know most of the syntax: `+module+` `+Foo+` `+where+`, `name +
+Type` signatures, equation-style `+f+` `+x+` `+=+` `+…+` definitions,
+`+x+` `+→+` `+…+` lambdas, and `+--+` comments. The compiler checks that
+your resources (files, sockets, tokens, handles) are used *exactly as
+many times as you declare* — and proves it at compile time. No null
+pointer exceptions. No use-after-free. No silent data races. No GC
+overhead.
+
+This repo is a *brand surface only*. The compiler, type checker, borrow
+checker, and codegen all live in
+https://github.com/hyperpolymath/affinescript[affinescript]. This repo
+carries:
+
+* Examples idiomatic to PureScript / Haskell developers
+* Documentation aimed at the typed-functional-programming community
+* A `+lucid+` shim CLI that aliases `+affinescript+` `+--face+`
+`+lucid+`
+* Tutorial and migration guides for bringing a typed-FP mental model to
+a strongly-typed, affine-typed, WASM-targeting world
+
+== Hello
+
+`+examples/hello.affine+`:
+
+[source,affine]
+----
+-- face: lucidscript
+
+module Hello where
+
+effect IO {
+  fn println(s: String) -> ();
+}
+
+main :: -{IO}-> ()
+main () = println("Hello, LucidScript!")
+----
+
+`+module+` `+…+` `+where+`, `name +
+Type` signatures, equation-style definitions, `+--+` comments — all
+lower to canonical AffineScript and produce the same typed-wasm output
+as every other face.
+
+== Install
+
+[source,bash]
+----
+opam install affinescript
+git clone https://github.com/hyperpolymath/lucidscript
+cd lucidscript
+----
+
+The `+affinescript+` binary does the work. The `+bin/lucid+` shim in
+this repo just defaults the `+--face+` flag.
+
+== Use
+
+[source,bash]
+----
+# Direct, via affinescript:
+affinescript eval --face lucid examples/hello.affine
+affinescript compile --face lucid examples/hello.affine -o hello.wasm
+
+# Or via the lucid shim (same thing):
+./bin/lucid eval examples/hello.affine
+./bin/lucid compile examples/hello.affine -o hello.wasm
+
+# Or via the justfile:
+just run examples/hello.affine
+just preview examples/hello.affine    # show the canonical lowering
+----
+
+Source files use the canonical `+.affine+` extension. The face is
+selected by the `+--+` `+face:+` `+lucidscript+` pragma on the first
+comment line, or by the `+--face+` `+lucid+` flag.
+
+== Different faces, same cube
+
+LucidScript is one of six established faces over the AffineScript core:
+
+* AffineScript — the canonical face
+* https://github.com/hyperpolymath/rattlescript[RattleScript] —
+Python-style
+* https://github.com/hyperpolymath/jaffascript[JaffaScript] — JavaScript
+/ TypeScript-style
+* *LucidScript* — PureScript / Haskell-style (this repo)
+* https://github.com/hyperpolymath/cafescripto[CafeScripto] —
+CoffeeScript-style
+* https://github.com/hyperpolymath/pseudoscript[PseudoScript] —
+pseudocode-style
+
+All six share the canonical `+.affine+` extension and lower to the same
+AST. Errors are reported in face-appropriate vocabulary.
+
+== Why LucidScript
+
+PureScript and Haskell give functional programmers a genuinely sound
+static type system — algebraic data types, type classes, row
+polymorphism, and effect tracking that catch whole classes of bugs
+before runtime. What they don’t give you is ownership and affine
+resource control, or a portable native compilation story: resource
+leaks, double-frees, and "`did I close that handle?`" are still managed
+by convention and discipline, and getting compiled output into a browser
+or a WASI runtime means a separate toolchain. LucidScript is a
+typed-FP-shaped on-ramp to a language that adds all of those — without
+forcing you to abandon `+module+` `+…+` `+where+`, type signatures, or
+equation-style definitions.
+
+The semantic core is already well aligned with PureScript: row
+polymorphism, ADTs, extensible effects, and type classes are native to
+AffineScript, not bolted on. For a PureScript / Haskell developer
+migrating in, the steps are:
+
+[arabic]
+. Rename `+.purs+` / `+.hs+` files to `+.affine+` and add `+--+`
+`+face:+` `+lucidscript+` at the top.
++
+{empty}2. Keep your `name +
+Type` signatures and equation-style `+f+` `+x+` `+=+` `+…+` definitions
+— the face reads them directly.
+. Write function application with canonical parens — `+f(x)+` rather
+than Haskell currying `+f+` `+x+` (a deliberate constraint to keep the
+lowering text-based).
+. Use the explicit forms (`+case+` `+…+` `+of+`, `+let+` `+…+` `+in+`
+`+…+`) where multi-clause definitions, `+do+`-notation, or
+`+where+`-hoisting aren’t yet handled (see Limitations).
+. Compile to typed-wasm; the output runs in browsers, Node, Deno,
+Wasmtime, and any WASI runtime.
+
+== Limitations (deferred)
+
+Some PureScript / Haskell surface features need AST-level rewrites that
+the text-to-text face transformer doesn’t yet handle:
+
+* Multi-clause function definitions (`+fact+` `+0+` `+=+` `+1;+`
+`+fact+` `+n+` `+=+` `+n+` `+*+` `+fact+` `+(n-1)+`)
+* `+do+`-notation desugaring beyond the trivial form
+* `+where+`-block hoisting
+
+These are tracked in
+https://github.com/hyperpolymath/affinescript/blob/main/examples/faces/README.adoc[the
+affinescript faces README] under "`Known transformer gaps`". Until they
+land, write the explicit forms (`+case+` `+…+` `+of+`, `+let+` `+…+`
+`+in+` `+…+` instead of `+where+`).
+
+== Status
+
+Alpha. The face transformer is implemented in
+`+affinescript/lib/lucid_face.ml+`. Known limitations are tracked in
+https://github.com/hyperpolymath/affinescript/blob/main/examples/faces/README.adoc[the
+affinescript faces README] under "`Known transformer gaps`".
+
+== License
+
+This project is licensed under the Mozilla Public License, v. 2.0. See
+the `+LICENSE+` file for details. Documentation is licensed
+CC-BY-SA-4.0.
+
+SPDX-License-Identifier: CC-BY-SA-4.0
