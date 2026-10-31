@@ -24,12 +24,12 @@ workflows:
         - 'actions/deploy-pages@v5.0.1'
         - 'actions/upload-pages-artifact@v5.0.0'
     '.github/workflows/push-email-notify.yml':
-        - 'hyperpolymath/smtp-notify-action@v0.5.0'
+        - 'hyperpolymath/smtp-notify-action@v0.5.1'
     '.github/workflows/scorecard.yml': []
     '.github/workflows/secret-scanner.yml':
         - 'actions/checkout@v7.0.1'
         - 'gitleaks/gitleaks-action@v3.0.0'
-        - 'trufflesecurity/trufflehog@v3.99.3'
+        - 'trufflesecurity/trufflehog@v3.99.7'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
@@ -83,14 +83,14 @@ dependencies:
         commit: 'sha1-e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e'
         owner_id: 90395851
         repo_id: 242854909
-    'hyperpolymath/smtp-notify-action@v0.5.0':
-        ref: 'v0.5.0'
-        commit: 'sha1-c1c9fa07992a02c1fd3d67a0dc1b08cccb852aef'
+    'hyperpolymath/smtp-notify-action@v0.5.1':
+        ref: 'v0.5.1'
+        commit: 'sha1-e384daf6167a7a7567642d6a62060106244d2413'
         owner_id: 6759885
         repo_id: 1352485172
-    'trufflesecurity/trufflehog@v3.99.3':
-        ref: 'v3.99.3'
-        commit: 'sha1-e63326d6545de8f425d93ce24078c6e68d83f70e'
+    'trufflesecurity/trufflehog@v3.99.7':
+        ref: 'v3.99.7'
+        commit: 'sha1-31ce31ee1abbcc7dc8eee5764c17121c3044c8b2'
         owner_id: 79229934
         repo_id: 77726177
     'webfactory/ssh-agent@v0.10.0':
