@@ -29,7 +29,7 @@ workflows:
     '.github/workflows/secret-scanner.yml':
         - 'actions/checkout@v7.0.1'
         - 'gitleaks/gitleaks-action@v3.0.0'
-        - 'trufflesecurity/trufflehog@v3.99.8'
+        - 'trufflesecurity/trufflehog@v3.99.9'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
@@ -88,9 +88,9 @@ dependencies:
         commit: 'sha1-e384daf6167a7a7567642d6a62060106244d2413'
         owner_id: 6759885
         repo_id: 1352485172
-    'trufflesecurity/trufflehog@v3.99.8':
-        ref: 'v3.99.8'
-        commit: 'sha1-ea68ca03c865c5f324e86e849ced20ed3cf9dbbb'
+    'trufflesecurity/trufflehog@v3.99.9':
+        ref: 'v3.99.9'
+        commit: 'sha1-3bd2b5887eb0efb8fa18bfd1d296032924e4ffdc'
         owner_id: 79229934
         repo_id: 77726177
     'webfactory/ssh-agent@v0.10.0':
