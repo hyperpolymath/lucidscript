@@ -32,12 +32,6 @@ gnu-grep = "latest"
 [alias]
 task = "go-task"
 
-[tasks.build]
-run = "just --justfile Justfile build"
-
-[tasks.test]
-run = "just --justfile Justfile test"
-
 [tasks.lint]
 run = "bun install --frozen-lockfile && bunx --no-install --bun prettier --check ."
 
